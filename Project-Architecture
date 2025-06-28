@@ -186,10 +186,5 @@ See CONTRIBUTING.md for:
 - Alignment verification requirements
 - Security review process
 
-## License
-
-[To be determined - likely open source with safety provisions]
-
----
 
 **Critical Note**: This system is designed to be deployed by multiple independent actors to create a robust defense network. Single deployments provide limited protection.
