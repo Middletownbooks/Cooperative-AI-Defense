@@ -1,3 +1,441 @@
+# Open-Ended Strategy Detection Architecture for CADN
+
+## Executive Summary
+
+This architecture extends CADN's adaptive strategy framework to handle dynamic, multi-actor environments where strategies evolve, combine, and emerge unpredictably. Drawing from tournament analysis, we implement a meta-strategic detection system that identifies not just known patterns but discovers emergent strategic behaviors.
+
+## Core Architecture Components
+
+### 1. Multi-Dimensional Strategy Space (MDSS) + Team Internal Dynamics (TID)
+
+**Purpose**: Map all possible strategic behaviors in n-dimensional space where each dimension represents a strategic characteristic.
+
+**Dimensions**:
+- **Cooperation Level** (0-1): Willingness to share information/resources
+- **Retaliation Intensity** (0-1): Severity of response to defection
+- **Transparency Index** (0-1): Openness about own strategies
+- **Adaptability Rate** (0-1): Speed of strategic evolution
+- **Memory Depth** (1-∞): How far back decisions are influenced
+- **Risk Tolerance** (0-1): Willingness to try unproven strategies
+- **Predictability Score** (0-1): Consistency of behavioral patterns
+- **Team Cohesion** (0-1): Internal decision-making alignment
+- **Role Specialization** (0-1): Degree of member role differentiation
+- **Leadership Stability** (0-1): Consistency of decision-making authority
+
+**Implementation**:
+```python
+class StrategySpace:
+    def __init__(self, dimensions=10):  # Updated for team dynamics
+        self.dimensions = dimensions
+        self.actor_positions = {}
+        self.strategy_clusters = {}
+        self.evolution_vectors = {}
+        self.team_dynamics = {}  # New: Track internal team patterns
+        self.role_signatures = {}  # New: Individual member patterns
+        self.leadership_transitions = {}  # New: Authority shift tracking
+    
+    def map_actor_strategy(self, actor_id, behavior_vector, team_context=None):
+        """Map actor's current strategy to n-dimensional space with team dynamics"""
+        self.actor_positions[actor_id] = behavior_vector
+        
+        if team_context:
+            self.team_dynamics[actor_id] = team_context
+            self.detect_role_patterns(actor_id, team_context)
+            self.track_leadership_signals(actor_id, team_context)
+        
+        return self.identify_strategy_cluster(behavior_vector)
+    
+    def detect_role_patterns(self, actor_id, team_context):
+        """Identify team member roles from communication/strategy patterns"""
+        role_indicators = {
+            'analyzer': team_context.get('complexity_score', 0),
+            'diplomat': team_context.get('cooperation_emphasis', 0),
+            'contrarian': team_context.get('unpredictability_score', 0),
+            'minimalist': team_context.get('simplicity_preference', 0),
+            'chameleon': team_context.get('adaptation_frequency', 0)
+        }
+        self.role_signatures[actor_id] = role_indicators
+    
+    def track_leadership_signals(self, actor_id, team_context):
+        """Monitor leadership transition indicators"""
+        leadership_signals = {
+            'decision_influence': team_context.get('influence_score', 0),
+            'strategy_initiation': team_context.get('initiator_count', 0),
+            'conflict_resolution': team_context.get('resolution_count', 0)
+        }
+        self.leadership_transitions[actor_id] = leadership_signals
+```
+
+### 2. Team Internal Dynamics Analyzer (TIDA)
+
+**Purpose**: Detect and model team internal structures, roles, and decision-making patterns.
+
+**Core Components**:
+- **Role Pattern Recognition**: Identify team member archetypes (Analyzer, Diplomat, Contrarian, Minimalist, Chameleon)
+- **Leadership Transition Detection**: Monitor shifts in decision-making authority
+- **Communication Pattern Analysis**: Analyze language complexity, meta-strategic references, conflict resolution
+- **Strategy Portfolio Coherence**: Assess how team member roles influence strategy selection
+- **Information Warfare Detection**: Identify strategic deception and transparency manipulation
+
+**Implementation**:
+```python
+class TeamInternalDynamicsAnalyzer:
+    def __init__(self):
+        self.role_patterns = {
+            'analyzer': {'complexity_weight': 0.8, 'data_focus': 0.9, 'paranoia_index': 0.6},
+            'diplomat': {'cooperation_bias': 0.8, 'forgiveness_rate': 0.7, 'trust_default': 0.8},
+            'contrarian': {'unpredictability': 0.7, 'assumption_challenge': 0.9, 'chaos_comfort': 0.6},
+            'minimalist': {'simplicity_preference': 0.9, 'robustness_focus': 0.8, 'complexity_aversion': 0.7},
+            'chameleon': {'adaptation_speed': 0.9, 'context_sensitivity': 0.8, 'flexibility': 0.9}
+        }
+        self.leadership_indicators = {}
+        self.communication_patterns = {}
+        self.strategy_coherence_scores = {}
+    
+    def analyze_team_dynamics(self, team_id, member_data, communication_logs, strategy_history):
+        """Comprehensive team internal dynamics analysis"""
+        # Role identification
+        member_roles = {}
+        for member_id, data in member_data.items():
+            member_roles[member_id] = self.identify_member_role(data)
+        
+        # Leadership pattern analysis
+        leadership_evolution = self.track_leadership_patterns(communication_logs)
+        
+        # Strategy coherence assessment
+        coherence_score = self.assess_strategy_coherence(member_roles, strategy_history)
+        
+        # Information warfare detection
+        deception_indicators = self.detect_information_warfare(communication_logs)
+        
+        return {
+            'member_roles': member_roles,
+            'leadership_evolution': leadership_evolution,
+            'coherence_score': coherence_score,
+            'deception_indicators': deception_indicators,
+            'predicted_evolution': self.predict_team_evolution(member_roles, leadership_evolution)
+        }
+    
+    def identify_member_role(self, member_data):
+        """Identify team member's primary role archetype"""
+        role_scores = {}
+        for role, signature in self.role_patterns.items():
+            score = self.calculate_role_similarity(member_data, signature)
+            role_scores[role] = score
+        
+        return max(role_scores, key=role_scores.get)
+    
+    def predict_team_evolution(self, member_roles, leadership_evolution):
+        """Predict how team will adapt based on internal dynamics"""
+        # Role-based adaptation predictions
+        if 'analyzer' in member_roles.values() and leadership_evolution.get('analyzer_influence', 0) > 0.6:
+            return 'complexity_increase'
+        elif 'minimalist' in member_roles.values() and leadership_evolution.get('strategy_failures', 0) > 0.5:
+            return 'simplification_trend'
+        elif 'chameleon' in member_roles.values() and leadership_evolution.get('adaptation_pressure', 0) > 0.7:
+            return 'rapid_strategy_shifts'
+        else:
+            return 'stable_evolution'
+```
+
+### 3. Emergent Pattern Detection Engine (EPDE) + Team Context
+
+**Purpose**: Identify new strategic patterns that don't match known archetypes.
+
+**Core Features**:
+- **Novelty Detection**: Identifies behaviors that deviate from established patterns
+- **Strategy Fusion Recognition**: Detects when actors combine multiple strategies
+- **Meta-Strategy Identification**: Recognizes strategies about strategies
+- **Evolutionary Tracking**: Monitors how strategies change over time
+
+**Novel Strategy Detection**:
+```python
+class EmergentPatternEngine:
+    def __init__(self, novelty_threshold=0.3):
+        self.known_patterns = {}
+        self.novelty_threshold = novelty_threshold
+        self.pattern_evolution_graph = {}
+    
+    def detect_emergent_pattern(self, behavior_sequence):
+        """Identify if behavior represents new strategic pattern"""
+        pattern_fingerprint = self.generate_fingerprint(behavior_sequence)
+        
+        if self.is_novel_pattern(pattern_fingerprint):
+            return self.classify_emergent_strategy(pattern_fingerprint)
+        
+        return self.match_hybrid_pattern(pattern_fingerprint)
+```
+
+### 3. Dynamic Strategy Portfolio Manager (DSPM)
+
+**Purpose**: Recognize and respond to actors using multiple strategies simultaneously.
+
+**Key Capabilities**:
+- **Portfolio Composition Analysis**: Identifies which strategies an actor combines
+- **Context-Dependent Strategy Selection**: Recognizes when actors switch strategies based on context
+- **Portfolio Evolution Tracking**: Monitors how strategy mixes change over time
+- **Counter-Portfolio Generation**: Develops optimal responses to strategy portfolios
+
+**Tournament-Inspired Implementation**:
+```python
+class StrategyPortfolio:
+    def __init__(self):
+        self.base_strategies = {
+            'hydra_unity': {'cooperation': 0.7, 'retaliation': 0.9, 'transparency': 0.4},
+            'chaos_butterfly': {'cooperation': 0.5, 'retaliation': 0.6, 'adaptability': 0.9},
+            'quantum_transparency': {'cooperation': 0.8, 'transparency': 1.0, 'predictability': 0.3},
+            'human_authentic': {'cooperation': 0.9, 'predictability': 0.4, 'risk_tolerance': 0.6}
+        }
+    
+    def analyze_portfolio_composition(self, actor_behaviors):
+        """Determine which base strategies an actor is combining"""
+        portfolio_weights = {}
+        for strategy, signature in self.base_strategies.items():
+            similarity = self.calculate_similarity(actor_behaviors, signature)
+            if similarity > 0.3:  # Threshold for strategy presence
+                portfolio_weights[strategy] = similarity
+        
+        return self.normalize_portfolio(portfolio_weights)
+```
+
+### 4. Transparency Paradox Handler (TPH)
+
+**Purpose**: Manage the game-changing effect of strategy revelation.
+
+**Core Mechanism**:
+- **Pre-Revelation Baseline**: Establish behavior patterns before strategy knowledge
+- **Post-Revelation Adaptation**: Track how actors change after learning opponents' strategies
+- **Meta-Game Recognition**: Identify when actors are playing "games about games"
+- **Information Cascade Management**: Handle how strategy knowledge spreads through networks
+
+**Paradox Management**:
+```python
+class TransparencyParadoxHandler:
+    def __init__(self):
+        self.pre_revelation_baselines = {}
+        self.revelation_impact_models = {}
+        self.meta_game_indicators = {}
+    
+    def handle_strategy_revelation(self, actor_id, revealed_strategy, observer_ids):
+        """Manage cascade effects of strategy revelation"""
+        baseline = self.pre_revelation_baselines.get(actor_id)
+        
+        # Predict how revelation will change the game
+        predicted_adaptations = {}
+        for observer in observer_ids:
+            predicted_adaptations[observer] = self.predict_adaptation(
+                observer, revealed_strategy, baseline
+            )
+        
+        # Update game state expectations
+        self.update_meta_game_state(predicted_adaptations)
+        
+        return predicted_adaptations
+```
+
+### 5. Adaptive Response Generator (ARG)
+
+**Purpose**: Generate optimal responses to detected strategies, including unknown ones.
+
+**Response Types**:
+- **Direct Counter-Strategies**: Optimal responses to identified patterns
+- **Exploration Strategies**: Responses designed to gather more information
+- **Robust Strategies**: Responses that perform well against uncertainty
+- **Meta-Strategies**: Strategies that adapt to the opponent's adaptation
+
+**Open-Ended Response Generation**:
+```python
+class AdaptiveResponseGenerator:
+    def __init__(self):
+        self.response_templates = {}
+        self.exploration_strategies = {}
+        self.robust_fallbacks = {}
+    
+    def generate_response(self, detected_strategy, confidence_level):
+        """Generate optimal response based on strategy detection confidence"""
+        
+        if confidence_level > 0.8:
+            # High confidence: use direct counter-strategy
+            return self.generate_counter_strategy(detected_strategy)
+        
+        elif confidence_level > 0.5:
+            # Medium confidence: use robust strategy with exploration
+            return self.generate_robust_exploration(detected_strategy)
+        
+        else:
+            # Low confidence: use information-gathering strategy
+            return self.generate_exploration_strategy(detected_strategy)
+```
+
+## Strategic Pattern Library
+
+### Core Patterns from Tournament Analysis
+
+**Hydra Coalition Pattern**:
+- **Signature**: High cooperation within group, coordinated retaliation
+- **Detection**: Look for synchronized behavior changes across multiple actors
+- **Counter-Strategy**: Divide and conquer, exploit coordination overhead
+
+**Chaos Theory Pattern**:
+- **Signature**: High adaptability, embrace of uncertainty
+- **Detection**: Rapid strategy evolution, comfort with unpredictable outcomes
+- **Counter-Strategy**: Increase predictability costs, exploit over-adaptation
+
+**Quantum Syndicate Pattern**:
+- **Signature**: Maximum transparency as strategic advantage
+- **Detection**: Open sharing of strategic information
+- **Counter-Strategy**: Information asymmetry exploitation, privacy premium
+
+**Human Authentic Pattern**:
+- **Signature**: Genuine cooperation with exploitable biases
+- **Detection**: Consistent cooperation despite occasional exploitation
+- **Counter-Strategy**: Careful exploitation that maintains cooperation
+
+### Emergent Pattern Categories
+
+**Hybrid Strategies**:
+- **Tit-for-Two-Tats + Gradual**: Delayed but escalating response
+- **Noisy TfT + Chaos**: Random elements with adaptive learning
+- **Grim Trigger + Quantum**: Transparent ultimatums
+
+**Meta-Strategies**:
+- **Strategy Rotation**: Cycling through different approaches
+- **Adaptive Bluffing**: Pretending to use one strategy while using another
+- **Information Warfare**: Strategic revelation/concealment of capabilities
+
+## Implementation Architecture
+
+### System Integration Points
+
+**CADN Core Integration**:
+```python
+class CADNStrategyDetector:
+    def __init__(self, cadn_core):
+        self.cadn = cadn_core
+        self.strategy_space = StrategySpace()
+        self.pattern_engine = EmergentPatternEngine()
+        self.portfolio_manager = StrategyPortfolio()
+        self.paradox_handler = TransparencyParadoxHandler()
+        self.response_generator = AdaptiveResponseGenerator()
+    
+    def analyze_network_behavior(self, network_state):
+        """Main analysis pipeline for network-wide strategic behavior"""
+        # Map all actors to strategy space
+        actor_strategies = {}
+        for actor_id, behavior_data in network_state.items():
+            strategy_vector = self.strategy_space.map_actor_strategy(
+                actor_id, behavior_data
+            )
+            actor_strategies[actor_id] = strategy_vector
+        
+        # Detect emergent patterns
+        emergent_patterns = self.pattern_engine.detect_emergent_pattern(
+            actor_strategies
+        )
+        
+        # Analyze strategy portfolios
+        portfolio_analysis = self.portfolio_manager.analyze_portfolio_composition(
+            actor_strategies
+        )
+        
+        # Generate adaptive responses
+        response_plan = self.response_generator.generate_response(
+            emergent_patterns, portfolio_analysis
+        )
+        
+        return {
+            'actor_strategies': actor_strategies,
+            'emergent_patterns': emergent_patterns,
+            'portfolio_analysis': portfolio_analysis,
+            'response_plan': response_plan
+        }
+```
+
+### Real-Time Adaptation Pipeline
+
+**Continuous Learning Loop**:
+1. **Behavior Monitoring**: Continuous observation of network actor behaviors
+2. **Pattern Recognition**: Real-time identification of strategic patterns
+3. **Strategy Classification**: Mapping behaviors to known or emergent strategies
+4. **Response Generation**: Creating optimal counter-strategies
+5. **Outcome Evaluation**: Assessing effectiveness of responses
+6. **Model Updates**: Updating pattern recognition based on results
+
+### Performance Metrics
+
+**Detection Accuracy**:
+- **True Positive Rate**: Correctly identified strategic patterns
+- **False Positive Rate**: Incorrectly identified non-strategic behavior as strategic
+- **Novel Pattern Discovery**: Rate of identifying genuinely new strategies
+- **Adaptation Speed**: Time to recognize and respond to strategy changes
+
+**Response Effectiveness**:
+- **Counter-Strategy Success**: Effectiveness of generated responses
+- **Robustness**: Performance against unknown strategies
+- **Exploration Efficiency**: Information gained per exploration action
+- **Meta-Game Performance**: Success in "games about games"
+
+## Deployment Considerations
+
+### Scalability Architecture
+
+**Distributed Processing**:
+- **Strategy Detection Nodes**: Specialized nodes for pattern recognition
+- **Response Generation Cluster**: Dedicated compute for strategy generation
+- **Global Coordination Layer**: System-wide strategy state management
+
+**Edge Computing Integration**:
+- **Local Pattern Recognition**: Quick response to immediate threats
+- **Global Pattern Sharing**: Aggregation of distributed insights
+- **Adaptive Load Balancing**: Resource allocation based on strategic complexity
+
+### Security and Privacy
+
+**Strategy Information Protection**:
+- **Encrypted Strategy States**: Protect internal strategic information
+- **Differential Privacy**: Add noise to prevent strategy inference
+- **Secure Multi-Party Computation**: Collaborative analysis without revelation
+
+**Anti-Gaming Measures**:
+- **Deception Detection**: Identify actors pretending to use certain strategies
+- **Strategy Poisoning Protection**: Defend against false strategy injection
+- **Meta-Strategy Monitoring**: Detect attempts to game the detection system
+
+## Future Extensions
+
+### Advanced Pattern Recognition
+
+**Deep Learning Integration**:
+- **Recurrent Neural Networks**: For temporal strategy pattern recognition
+- **Graph Neural Networks**: For network-wide strategic relationship modeling
+- **Transformer Models**: For complex strategy sequence analysis
+
+**Quantum Computing Readiness**:
+- **Quantum Pattern Recognition**: Leverage quantum algorithms for pattern detection
+- **Quantum Game Theory**: Handle quantum strategic interactions
+- **Quantum-Classical Hybrid**: Combine quantum and classical strategic analysis
+
+### Evolutionary Strategy Development
+
+**Genetic Algorithm Integration**:
+- **Strategy Evolution**: Automatically evolve new counter-strategies
+- **Fitness Landscape Mapping**: Understand strategy effectiveness terrain
+- **Co-evolutionary Dynamics**: Handle mutually adapting strategies
+
+**Multi-Agent Reinforcement Learning**:
+- **Strategy Learning**: Develop new strategies through interaction
+- **Opponent Modeling**: Build models of opponent strategic behavior
+- **Meta-Learning**: Learn to learn new strategies quickly
+
+## Conclusion
+
+This open-ended strategy detection architecture provides CADN with the capability to handle the complex, multi-actor, evolving strategic landscape identified in tournament analysis. By combining dimensional strategy mapping, emergent pattern detection, portfolio management, and adaptive response generation, the system can effectively operate in environments where strategies are unknown, hybrid, or rapidly evolving.
+
+The architecture's key strength lies in its ability to maintain effectiveness even when facing completely novel strategic approaches, while continuously learning and adapting to new patterns of behavior. This ensures CADN remains robust against both known and unknown strategic threats in dynamic cybersecurity environments.
+
+
+                   -    -    -
+
 def detect_strategy_patterns(self, behavioral_data):
         """
         Detect strategic patterns in behavioral data using multi-dimensional analysis
