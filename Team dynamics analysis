@@ -1,0 +1,38 @@
+def detect_strategy_patterns(self, behavioral_data):
+        """
+        Detect strategic patterns in behavioral data using multi-dimensional analysis
+        """
+        # Extract features from behavioral data
+        features = self.extract_features(behavioral_data)
+        
+        # Multi-dimensional strategy analysis
+        strategy_signature = {
+            'cooperation_level': self.analyze_cooperation(features),
+            'adaptation_rate': self.analyze_adaptation(features),
+            'trust_dynamics': self.analyze_trust_patterns(features),
+            'information_strategy': self.analyze_information_handling(features),
+            'uncertainty_response': self.analyze_uncertainty_handling(features),
+            'pattern_complexity': self.analyze_pattern_complexity(features),
+            'temporal_consistency': self.analyze_temporal_patterns(features),
+            'meta_strategy_awareness': self.analyze_meta_patterns(features)
+        }
+        
+        # Team Internal Dynamics Analysis
+        team_dynamics = self.team_dynamics_analyzer.analyze_team_dynamics(
+            behavioral_data, features
+        )
+        
+        # Geometric trust verification (now includes team dynamics)
+        trust_metrics = self.geometric_trust_verifier.verify_trust_geometry(
+            strategy_signature, behavioral_data, team_dynamics
+        )
+        
+        # Combine all analysis
+        return {
+            'strategy_signature': strategy_signature,
+            'team_dynamics': team_dynamics,
+            'trust_metrics': trust_metrics,
+            'threat_level': self.calculate_threat_level(strategy_signature, trust_metrics, team_dynamics),
+            'confidence': self.calculate_confidence(features),
+            'recommendations': self.generate_recommendations(strategy_signature, trust_metrics, team_dynamics)
+        }
