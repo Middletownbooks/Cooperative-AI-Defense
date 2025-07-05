@@ -1,0 +1,302 @@
+def optimize_parameters_for_strategic_environment(self, network_state, strategic_profiles):
+    """
+    Optimize defense parameters based on strategic intelligence analysis
+    Incorporates findings from arxiv:2507.02618 about LLM strategic behaviors
+    """
+    # Analyze strategic composition of network
+    strategic_composition = self._analyze_strategic_composition(strategic_profiles)
+    
+    # Determine optimal parameter set based on strategic environment
+    optimal_strategy = self._select_optimal_strategy_for_composition(strategic_composition)
+    
+    # Get base parameters
+    base_params = self.parameter_sets[optimal_strategy].copy()
+    
+    # Apply strategic intelligence adjustments
+    strategic_adjustments = self._calculate_strategic_adjustments(
+        strategic_composition, network_state
+    )
+    
+    # Merge parameters
+    optimized_params = {**base_params, **strategic_adjustments}
+    
+    # Apply team coordination if relevant
+    if network_state.get('team_coordination_active'):
+        team_adjustments = self.tida.optimize_team_parameters(
+            network_state, optimized_params
+        )
+        optimized_params.update(team_adjustments)
+    
+    return {
+        'strategy': optimal_strategy,
+        'parameters': optimized_params,
+        'strategic_composition': strategic_composition,
+        'reasoning': self._generate_optimization_reasoning(
+            optimal_strategy, strategic_composition, strategic_adjustments
+        )
+    }
+
+def _analyze_strategic_composition(self, strategic_profiles):
+    """Analyze the strategic composition of the network"""
+    composition = {
+        'ruthless_exploiters': 0,
+        'naive_cooperators': 0,
+        'forgiving_reciprocators': 0,
+        'strategic_reasoners': 0,
+        'unknown_profiles': 0
+    }
+    
+    total_agents = len(strategic_profiles)
+    
+    for profile in strategic_profiles:
+        primary_profile = profile.get('strategic_profile', {}).get('primary_profile', 'unknown')
+        
+        if primary_profile == 'ruthless_exploiter':
+            composition['ruthless_exploiters'] += 1
+        elif primary_profile == 'naive_cooperator':
+            composition['naive_cooperators'] += 1
+        elif primary_profile == 'forgiving_reciprocator':
+            composition['forgiving_reciprocators'] += 1
+        elif primary_profile == 'strategic_reasoner':
+            composition['strategic_reasoners'] += 1
+        else:
+            composition['unknown_profiles'] += 1
+    
+    # Convert to percentages
+    for key in composition:
+        composition[key] = composition[key] / total_agents if total_agents > 0 else 0
+    
+    return composition
+
+def _select_optimal_strategy_for_composition(self, strategic_composition):
+    """
+    Select optimal strategy based on strategic composition
+    Based on findings about different LLM strategic fingerprints
+    """
+    ruthless_ratio = strategic_composition['ruthless_exploiters']
+    cooperative_ratio = strategic_composition['naive_cooperators']
+    forgiving_ratio = strategic_composition['forgiving_reciprocators']
+    strategic_ratio = strategic_composition['strategic_reasoners']
+    
+    # High ruthless exploiter environment - adopt defensive stance
+    if ruthless_ratio > 0.4:
+        return 'grim_trigger_defense'
+    
+    # High cooperative environment - can afford to be generous
+    elif cooperative_ratio > 0.5:
+        return 'generous_cooperation'
+    
+    # Balanced environment with strategic reasoners - use adaptive approach
+    elif strategic_ratio > 0.3:
+        return 'adaptive_strategic'
+    
+    # Mixed environment - use tit-for-tat with forgiveness
+    else:
+        return 'forgiving_reciprocator'
+
+def _calculate_strategic_adjustments(self, strategic_composition, network_state):
+    """
+    Calculate strategic adjustments based on composition and network state
+    Incorporates shadow-of-the-future and opponent modeling insights
+    """
+    adjustments = {}
+    
+    # Shadow of the future consideration - based on network stability
+    network_stability = network_state.get('stability_score', 0.5)
+    termination_probability = 1.0 - network_stability
+    
+    # Adjust cooperation threshold based on termination probability
+    if termination_probability > 0.75:
+        # Short shadow of future - be more defensive
+        adjustments['cooperation_threshold'] = 0.2
+        adjustments['defection_penalty'] = 0.9
+    elif termination_probability > 0.25:
+        # Medium shadow - balanced approach
+        adjustments['cooperation_threshold'] = 0.5
+        adjustments['defection_penalty'] = 0.6
+    else:
+        # Long shadow - can afford to be more cooperative
+        adjustments['cooperation_threshold'] = 0.8
+        adjustments['defection_penalty'] = 0.3
+    
+    # Adjust based on strategic composition
+    ruthless_ratio = strategic_composition['ruthless_exploiters']
+    if ruthless_ratio > 0.3:
+        adjustments['retaliation_strength'] = min(1.0, 0.5 + ruthless_ratio)
+        adjustments['forgiveness_rate'] = max(0.1, 0.5 - ruthless_ratio)
+    
+    # Opponent modeling adjustments
+    adjustments['opponent_modeling_depth'] = min(10, int(5 + strategic_composition['strategic_reasoners'] * 10))
+    adjustments['pattern_recognition_window'] = min(20, int(10 + strategic_composition['strategic_reasoners'] * 20))
+    
+    return adjustments
+
+def _generate_optimization_reasoning(self, optimal_strategy, strategic_composition, strategic_adjustments):
+    """Generate human-readable reasoning for strategy selection"""
+    reasoning = []
+    
+    # Strategy selection reasoning
+    reasoning.append(f"Selected '{optimal_strategy}' strategy based on strategic composition:")
+    
+    for profile_type, ratio in strategic_composition.items():
+        if ratio > 0.1:  # Only mention significant compositions
+            reasoning.append(f"  - {profile_type}: {ratio:.1%}")
+    
+    # Adjustment reasoning
+    reasoning.append("\nStrategic adjustments applied:")
+    for adjustment, value in strategic_adjustments.items():
+        reasoning.append(f"  - {adjustment}: {value}")
+    
+    return "\n".join(reasoning)
+
+class StrategicIntelligenceProfiler:
+    """
+    Profile agents based on strategic fingerprints from LLM research
+    Implements findings from evolutionary game theory analysis
+    """
+    
+    def __init__(self):
+        self.strategic_fingerprints = {}
+        self.behavioral_patterns = {}
+        
+    def analyze_agent_behavior(self, agent_id, interaction_history):
+        """
+        Analyze agent behavior to determine strategic profile
+        Based on conditional cooperation probabilities P(C|state)
+        """
+        if len(interaction_history) < 4:
+            return {'profile': 'unknown', 'confidence': 0.0}
+        
+        # Calculate strategic fingerprint
+        fingerprint = self._calculate_strategic_fingerprint(interaction_history)
+        
+        # Classify based on fingerprint patterns
+        profile = self._classify_strategic_profile(fingerprint)
+        
+        # Store for future reference
+        self.strategic_fingerprints[agent_id] = fingerprint
+        
+        return {
+            'profile': profile,
+            'fingerprint': fingerprint,
+            'confidence': self._calculate_confidence(fingerprint, interaction_history)
+        }
+    
+    def _calculate_strategic_fingerprint(self, history):
+        """Calculate P(C|CC), P(C|CD), P(C|DC), P(C|DD) probabilities"""
+        states = {'CC': [], 'CD': [], 'DC': [], 'DD': []}
+        
+        for i in range(1, len(history)):
+            prev_state = history[i-1]['state']
+            current_action = history[i]['my_action']
+            
+            if prev_state in states:
+                states[prev_state].append(1 if current_action == 'C' else 0)
+        
+        fingerprint = {}
+        for state, actions in states.items():
+            if actions:
+                fingerprint[f'P_C_{state}'] = sum(actions) / len(actions)
+            else:
+                fingerprint[f'P_C_{state}'] = 0.5  # Default neutral
+        
+        return fingerprint
+    
+    def _classify_strategic_profile(self, fingerprint):
+        """Classify agent based on strategic fingerprint patterns"""
+        p_cc = fingerprint.get('P_C_CC', 0.5)
+        p_cd = fingerprint.get('P_C_CD', 0.5)
+        p_dc = fingerprint.get('P_C_DC', 0.5)
+        p_dd = fingerprint.get('P_C_DD', 0.5)
+        
+        # Ruthless exploiter (like Gemini in harsh conditions)
+        if p_cd < 0.1 and p_dc < 0.2 and p_dd < 0.2:
+            return 'ruthless_exploiter'
+        
+        # Naive cooperator (like OpenAI in all conditions)
+        elif p_cc > 0.9 and p_cd > 0.4 and p_dc > 0.3:
+            return 'naive_cooperator'
+        
+        # Forgiving reciprocator (like Anthropic Claude)
+        elif p_cc > 0.9 and p_cd > 0.6 and p_dc > 0.6:
+            return 'forgiving_reciprocator'
+        
+        # Strategic reasoner (adaptive behavior)
+        elif abs(p_cc - p_cd) > 0.3 or abs(p_dc - p_dd) > 0.3:
+            return 'strategic_reasoner'
+        
+        else:
+            return 'unknown'
+    
+    def _calculate_confidence(self, fingerprint, history):
+        """Calculate confidence in profile classification"""
+        sample_size = len(history)
+        if sample_size < 10:
+            return max(0.1, sample_size / 10.0)
+        
+        # Higher confidence for more distinct patterns
+        variance = sum((p - 0.5) ** 2 for p in fingerprint.values()) / len(fingerprint)
+        return min(0.95, 0.5 + variance)
+
+def __init__(self, sentinel_id, verification_keys, commitment_scheme, cooperation_strategy="adaptive"):
+    self.sentinel_id = sentinel_id
+    self.verification_network = DistributedVerificationNetwork(verification_keys)
+    self.commitment_scheme = ImmutableCommitmentScheme(commitment_scheme)
+    self.adversarial_detector = AdversarialBehaviorDetector()
+    
+    # Enhanced cooperation strategy selection based on strategic intelligence findings
+    if cooperation_strategy == "generous":
+        self.cooperation_protocol = GenerousTitForTatProtocol()
+    elif cooperation_strategy == "contrite":
+        self.cooperation_protocol = ContriteTitForTatProtocol()
+    elif cooperation_strategy == "adaptive":
+        self.cooperation_protocol = AdaptiveCooperationProtocol()
+    
+    # Strategic Intelligence Integration - LLM behavioral profiling
+    self.strategic_profiler = StrategicIntelligenceProfiler()
+    
+    # TIDA Integration - Team Intelligence and Dynamics Analysis
+    self.tida = TeamIntelligenceAnalyzer()
+    
+    # Core components with team dynamics and strategic intelligence
+    self.mdss = MultiDimensionalStrategySystem()
+    self.epde = EvasionPreventionDetectionEngine()
+    self.dspm = DefenseStrategyParameterManager()
+    self.tph = ThreatPredictionHandler()
+    self.arg = AdversarialResponseGenerator()
+    
+    # Cross-component coordination
+    self.strategy_coordinator = StrategyCoordinator()
+    self.performance_monitor = PerformanceMonitor()
+    
+    # Metrics and logging
+    self.metrics = MetricsCollector()
+    self.logger = SecurityLogger()
+    
+    # Strategic intelligence parameter sets based on research findings
+    self.parameter_sets = {
+        'grim_trigger_defense': {
+            'cooperation_threshold': 0.1,
+            'retaliation_strength': 1.0,
+            'forgiveness_rate': 0.0,
+            'trust_recovery_time': float('inf')
+        },
+        'generous_cooperation': {
+            'cooperation_threshold': 0.9,
+            'retaliation_strength': 0.1,
+            'forgiveness_rate': 0.9,
+            'trust_recovery_time': 1
+        },
+        'adaptive_strategic': {
+            'cooperation_threshold': 0.7,
+            'retaliation_strength': 0.6,
+            'forgiveness_rate': 0.4,
+            'trust_recovery_time': 3
+        },
+        'forgiving_reciprocator': {
+            'cooperation_threshold': 0.8,
+            'retaliation_strength': 0.5,
+            'forgiveness_rate': 0.7,
+            'trust_recovery_time': 2
+        }
+    }
