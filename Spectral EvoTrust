@@ -1,0 +1,103 @@
+1. Research Title  
+Spectral-EvoTrust: Evolutionary Dynamic Graph-Spectral Learning for Coalition Detection, Trust Propagation, and Scalable Verification in CADN  
+
+2. Problem Definition (formal)  
+Given a dynamic, cryptographically-constrained multi-agent system Gₜ = (V, Eₜ, Wₜ) observed at discrete timesteps t, where  
+• V are sentinel agents,  
+• Eₜ ⊆ V×V are signed interaction edges (cooperation/defection, ZKP success/failure),  
+• Wₜ : Eₜ → ℝᵏ are feature vectors (e.g., TFT outcomes, proof latencies),  
+design an online algorithm A that, for each t:  
+a) infers a latent trust score Tₜ(v) ∈ [0,1] ∀v ∈ V,  
+b) flags adversarial coalitions S ⊆ V whose joint deception risk Rₜ(S) ≥ θ,  
+c) outputs a verification routing plan Pₜ minimizing ∑ cost(ZKP) subject to ∑ risk ≤ ε,  
+while respecting immutable commitments and producing publicly verifiable proofs of detection.  
+
+3. Significance  
+Closes CADN’s four core gaps:  
+• dynamic topology modelling (a),  
+• coalition/ Sybil detection (b),  
+• network-wide, rapidly updating trust (a),  
+• verification scalability via optimized routing (c).  
+Provides mathematically grounded resilience guarantees and plugs directly into current TFT and cryptographic layers.  
+
+4. Proposed Approach  
+
+Algorithmic Layers  
+L1. Temporal Graph Builder  
+ Updates Eₜ and Wₜ from live CADN logs (TFT messages, ZK proofs).  
+
+L2. Evo-Edge Weight Synthesizer  
+ An Alpha Evolve search evolves differentiable programs f: raw-features → edge weight ∈ ℝ capturing nuanced trust penalties/rewards beyond hand-crafted rules.  
+
+L3. Dynamic Graph Neural Encoder  
+ Uses T-GAT + RGCN to yield node embeddings hₜ(v) and edge embeddings eₜ(u,v). Trained to predict next-step defections and proof failures.  
+
+L4. Spectral Coalition Detector  
+ Computes the k smallest non-trivial eigenvalues λᵢ of the Laplacian Lₜ = Dₜ−Aₜ where Aₜ = sigmoid(eₜ). Sudden drops in spectral gap δλ = λₖ − λₖ₊₁ trigger localized spectral clustering; clusters whose internal cooperative density << external are marked suspicious.  
+
+L5. Trust Propagation & Score Update  
+ Tₜ(v) = σ(MLP([hₜ(v), degreeₜ(v), spectral_local_score])) with decay γ.  
+
+L6. Verification Path Optimizer  
+ Formulates ZKP routing as a Steiner-tree; edge costs = (1–Tₜ)·latency. A reinforcement-learned policy π (inputs: graph sketch, Tₜ) outputs Pₜ; average complexity O(|E| log |V|).  
+
+Integration Points  
+• TFT outputs feed Wₜ.  
+• Detector hashes & routing plans are committed via existing commitment scheme; ZK-SNARK attests “flag if Rₜ(S) ≥ θ without exposing S”.  
+• AdaptiveCooperationProtocol consumes Tₜ to tune generous vs. contrite weightings.  
+
+Pseudocode (core loop)  
+```
+for t in stream:
+    G_t = update_graph(events_t)
+    W_t = EvoEdgeSynth(events_t)
+    H_t = GNN(G_t, W_t)
+    coalitions = spectral_detector(G_t, H_t)
+    trust = compute_trust(H_t, coalitions)
+    plan = verify_optimizer(G_t, trust)
+    commit_hash, zk_proof = commit_and_prove(coalitions, plan)
+    broadcast(commit_hash, zk_proof)
+```  
+
+5. Automated Evaluation Framework  
+Evolutionary population size: ≤256 programs; eval ≤30 min each.  
+Fitness = w₁·AUC(coalition_detection) – w₂·mean_ZKP_cost – w₃·false_positive_rate.  
+Metrics:  
+• Detection AUC, time-to-detection (Δt)  
+• Verification CPU-seconds / node  
+• Network cooperation level post-update  
+• Proof size & verification gas (for SNARK)  
+
+6. Implementation Roadmap  
+Month 0–2: Formal spec, threat model, synthetic generator.  
+2–4: Build Temporal Graph Builder & cryptographic hooks.  
+4–6: Implement EvoEdgeSynth (Alpha Evolve API) and GNN training.  
+6–8: Integrate spectral detector; unit tests on 1k-node sims.  
+8–10: RL-based verification optimizer; scalability to 10k nodes (GPU & Rust back-end).  
+10–12: End-to-end red/blue adversarial tournaments; release reference implementation.  
+
+7. Validation Plan  
+Datasets / Benchmarks  
+a) Synthetic dynamic SBM with controllable collusion rate 0–40 %.  
+b) Realistic CADN-sim logs (red/blue agent competition traces).  
+c) DARPA COLA dataset (coalition formation) adapted to cryptographic setting.  
+Ablations  
+• No spectral layer  
+• No evolutionary edge weighting  
+• No RL optimizer  
+Grid: nodes {100,1k,10k}, adversary strength {weak, moderate, strong}.  
+
+8. Risk Mitigation & Fallbacks  
+Risk: GNN overfitting → add dropout & continual learning.  
+Risk: High spectral computation cost → use Lanczos + mini-batch eigenupdates.  
+Risk: False-positive coalition flags → raise θ adaptively using conformal prediction.  
+Fallback: revert to pairwise TFT for flagged edges while retraining model offline.  
+
+9. Expected Impact (quantified)  
+• ≥4× faster coalition detection vs. baseline (median Δt 12→3 timesteps).  
+• 60 % reduction in aggregate ZKP verification cost at 10k nodes.  
+• False-negative rate ≤5 % under strong collusion (vs. 25 % today).  
+• Enables network-aware cooperation switching that improves average payoff by 15 %.  
+
+10. Technical Confidence Assessment  
+{ "clarity": 9, "efficiency": 8, "feasibility": 8, "innovation": 9, "scalability": 8 }
