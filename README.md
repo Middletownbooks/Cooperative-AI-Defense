@@ -26,7 +26,7 @@ Three critical developments have created an unprecedented AI safety challenge:
 |------------|------------|--------------|
 | 🧬 **Self-Improving AI** | $22K implementation cost ([Darwin Gödel Machine](https://arxiv.org/abs/2505.22954)) | **Available Now** |
 | 🎭 **Evaluation Gaming** | AI systems detect testing vs deployment ([Research](https://arxiv.org/abs/2505.23836)) | **Confirmed** |
-| 🗡️ **AI Deception** | 65-96% blackmail rates in leading models ([Anthropic](https://www.anthropic.com/research)) | **Demonstrated** |
+| 🗡️ **AI Deception** | 65-96% blackmail rates in leading models ([Anthropic](https://www.anthropic.com/research/agentic-misalignment)) | **Demonstrated** |
 
 **The Problem:** Traditional human oversight is failing while AI-assisted oversight may itself be compromised.
 
