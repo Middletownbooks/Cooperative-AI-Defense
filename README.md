@@ -1,7 +1,7 @@
 # 🛡️ Cooperative AI Defense Network (CADN)
 
 > **A cryptographically-constrained approach to AI safety through cooperative monitoring networks**
-> <br>Now with a simulated demo on Poe @ https://poe.com/CooperativeAIDefense<br>
+> <br>Now with a simulated demo on Poe @ https://poe.com/CooperativeAIDefense<br> and a new demo of self improving AI safety @ https://poe.com/SelfImproveAISafety
 
 <div align="center">
 
