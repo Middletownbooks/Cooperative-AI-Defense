@@ -1,0 +1,30 @@
+
+1
+Self improving safety and alignment?
+2 min read
++
+AI-Assisted Alignment
+Chain-of-Thought Alignment
+Self Improvement
+1
+Self improving safety and alignment?
+by Middletownbooks
+1st Aug 2025
+This post was rejected for the following reason(s):
+
+We are sorry about this, but submissions from new users that are mostly just links to papers on open repositories (or similar) have usually indicated either crackpot-esque material, or AI-generated speculation. It's possible that this one is totally fine. Unfortunately, part of the trouble with separating valuable from confused speculative science or philosophy is that the ideas are quite complicated, accurately identifying whether they have flaws is very time intensive, and we don't have time to do that for every new user presenting a speculative theory or framing (which are usually wrong).
+
+Separately, LessWrong users are also quite unlikely to follow such links to read the content without other indications that it would be worth their time (like being familiar with the author), so this format of submission is pretty strongly discouraged without at least a brief summary or set of excerpts that would motivate a reader to read the full thing.
+
+I wasn't able to look at your demo without signing up for Poe.
+
+This is a linkpost for https://poe.com/SelfImproveAISafety
+I've been pretty heavily focused on AI safety and alignment issues for the past month or so (and did some research and writing on it at few years ago). The main spur for my renewed interest in these topics was the one two punch of DeepMind's Alpha Evolve followed by the Darwin Godel Machine paper. Particularly concerning for me was that while AI is self improving with the DGM model, alignment can deteriorate.
+
+About a month ago, I started a github project to collect different papers and ideas which seemed to me to be AI safety and alignment related or relevant. Not having a particularly technical background myself, I often rely on AI analysis to determine how relevant a given paper is to AI safety and alignment. 
+
+A few days ago, after seeing someone posting about the ASI-Arch paper (yet another self improving AI), I bemoaned the apparent lack of public self improving AI safety and alignment work. Then, I got to thinking... maybe some of the ideas I've collected  on github could be brought together for at least a demo project of what self improving AI safety and alignment might look like. 
+
+So, in my little demo, we have chain of thought (CoT) monitoring and some sample Aymara prompts and responses brought together with the ability to choose different models for testing, red teaming and blue teaming. Ideally, such a project would track the safety and alignment of multiple models over time and tested in different ways by different users, with different red and blue team models. I attempted to add a knowledge graph tracking system to the demo, so that over time and use a safety and alignment profile would emerge for different models, and so that red teaming would get more sophisticated and blue teaming would improve safety and alignment over time. 
+
+The demo needs a lot of work and tweaking before it can actually help improve safety and alignment, I believe. But, I also believe AI safety and alignment are too important right now to trust that behind the scenes people with expertise are doing everything necessary to ensure well aligned and safe AGI/ASI. So, if you agree and have more technical expertise than I do, feel free to take my demo idea and remix it to enhance it.
