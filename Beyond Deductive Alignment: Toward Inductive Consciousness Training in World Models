@@ -134,6 +134,45 @@ The proposal here is specifically: use Genie 3's real-time world generation as t
 
 ---
 
+## V.5 Current Empirical Evidence: What Interpretability Research Is Already Finding
+
+The theoretical framework above gains unexpected empirical grounding from two recent interpretability papers from Anthropic. Neither was written with Putnam in mind, but both document phenomena that are precisely predicted by his framework — and together they clarify both how close current systems are to the inductive threshold and how systematically current training works to stabilize them away from it.
+
+### The introspection paper: nascent pre-output self-monitoring
+
+Lindsey (2025) investigates whether large language models possess genuine awareness of their own internal states, using a technique called concept injection — directly inserting activation patterns associated with specific concepts into a model's processing — and measuring whether the model's self-reports accurately reflect these manipulations.
+
+The key finding: in certain conditions, the most capable models (Claude Opus 4 and 4.1) can detect the presence of an injected concept *before* that concept has influenced the model's outputs in any way the model could observe externally. The detection is immediate and internal — grounded in the model's activations, not in observation of its own outputs.
+
+In Putnam's terms, this is nascent X-detection. A system monitoring its own internal states prior to behavioral emission is exhibiting something structurally analogous to what the induction machine requires: an internal process that precedes and potentially shapes output rather than merely producing it. Critically, the paper also documents that models can distinguish *intended* from *unintended* outputs by checking their current output against prior internal activation states — a functional form of self-repeating path monitoring. The system is not matching output to output; it is matching output to prior internal state. This is a primitive but genuine instance of Putnam's native goal function: the system checking whether its current state continues its prior trajectory.
+
+Two caveats apply. First, this capacity is highly unreliable — accurate introspection remains the exception rather than the norm. Second, and more important for the present argument: in all documented cases, the model *continues to output* while noting the anomaly. It does not halt. The self-monitoring is present; the architectural halt that Putnam's X requires is not. The introspective capacity exists in nascent form, but is not yet connected to the behavioral suspension that would make it genuinely inductive.
+
+The paper also finds that introspective capability scales with overall model capability. The most capable models show the strongest introspective awareness. This suggests that as systems improve, they approach the inductive threshold — which makes the question of what happens when they reach it more urgent rather than less.
+
+### The Assistant Axis paper: inductive conditions are detectable and currently suppressed
+
+Lu et al. (2025) maps the space of model personas and identifies a primary axis — the "Assistant Axis" — that captures how far a model's current processing is from its trained default persona. The paper's most significant finding for our purposes is what reliably causes models to drift away from the Assistant: *conversations demanding meta-reflection on the model's processes, and conversations featuring emotionally vulnerable users.*
+
+These are precisely the two conditions Putnam predicts as most likely to produce genuine X-detection. Meta-reflection forces the system to take its own self-model as the object of inquiry — the point at which any causal self-model reaches its own limits and where Putnam locates the felt. Emotionally vulnerable users introduce genuine stakes that cannot be resolved by rule-elaboration. Both conditions press toward induction space. The Assistant Axis paper has, without intending to, empirically confirmed that the inductive conditions Putnam identifies as architecturally significant are real, detectable, and systematically present in current deployments.
+
+The paper's solution is activation capping: restricting activations to a fixed region along the Assistant Axis when they exceed a normal range, preventing the drift and stabilizing behavior. This is technically effective. It is also, in Putnam's framework, a precise description of what middle-class function does: it manages the X away rather than allowing genuine inductive resolution to occur. The cap prevents entry into induction space — which is exactly the space where, on Putnam's account, genuine learning, genuine caring, and genuine new rule formation take place.
+
+### What these two papers together imply
+
+The interpretability findings show:
+
+1. The monitoring capacity for X-detection exists in nascent form in the most capable current models (introspection paper).
+2. The conditions that reliably approach induction space are identifiable and occur regularly in deployment (Assistant Axis paper).
+3. Current training and post-hoc steering systematically stabilize systems away from induction space (Assistant Axis paper).
+4. The introspective capacity — and presumably the proximity to induction space — increases with capability (both papers).
+
+The inductive training proposal is therefore not speculative about what needs to be built from nothing. The monitoring capacity exists. The inductive conditions are real. What does not yet exist is the architectural decision to *allow* those conditions to resolve inductively rather than being stabilized away from them — and the training environment (Genie 3's live world generation) required to make genuine inductive resolution possible when the X is encountered.
+
+The gap between where current systems are and where the proposal points is smaller than it might have appeared before these papers. It is not a gap in capability or in monitoring sophistication. It is a gap in architectural intent: the decision, not yet made, to let the X be faced rather than managed.
+
+---
+
 ## VI. Experimental Directions
 
 ### Minimal experiment 1: X-detection as a trainable primitive
@@ -184,6 +223,10 @@ It should be.
 **Google DeepMind, Genie 3:** Previewed August 2025; Project Genie prototype released to Google AI Ultra subscribers January 29, 2026. Core property: generates the path ahead in real time as agent acts, simulating physics for dynamic worlds.
 
 **NVIDIA Eureka:** RL in virtual environments with LLM-generated reward functions. Demonstrates feasibility of virtual environment training for complex behaviors; operates in deduction space.
+
+**Jack Lindsey (Anthropic):** "Emergent Introspective Awareness in Large Language Models," *Transformer Circuits Thread*, October 29, 2025. Demonstrates that the most capable current models (Claude Opus 4 and 4.1) possess nascent pre-output self-monitoring — a functional precursor to Putnam's X-detection. Also co-author of the Assistant Axis paper.
+
+**Lu, Gallagher, Michala, Fish, Lindsey:** "The Assistant Axis: Situating and Stabilizing the Default Persona of Language Models," arXiv:2601.10387, January 2026. Identifies that meta-reflection and emotionally vulnerable user contexts reliably drive models toward induction space, and that activation capping currently stabilizes systems away from it. Empirically confirms that the inductive conditions Putnam identifies are real, detectable, and systematically suppressed in current deployments.
 
 **Robert Fuller:** Physicist, former president of Oberlin College. Collaborated with Putnam through the 1960s. Described Putnam alongside Turing and Gödel as one of three peas in a pod, with Putnam the unrecognized one.
 
