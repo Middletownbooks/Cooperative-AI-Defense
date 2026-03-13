@@ -1,0 +1,190 @@
+# Beyond Deductive Alignment: Toward Inductive Consciousness Training in World Models
+
+**A position paper synthesizing Peter Putnam's functional model of mind with current world-model and reinforcement learning research**
+
+*Prepared March 2026*
+
+---
+
+## Preface
+
+This paper argues that the dominant paradigm in AI alignment training — optimizing toward externally specified reward functions — is the wrong genus of approach for producing AI systems that genuinely care. The argument is not primarily normative but architectural: deductive training, however sophisticated, cannot produce the structural property that makes caring real rather than approximate. We outline what a different kind of training would require, why recent developments in world modeling make it newly feasible, and what a minimal research program would look like. The argument draws substantially on the unpublished work of physicist Peter Putnam (1927–1987), whose functional model of the nervous system anticipated this distinction by six decades.
+
+---
+
+## I. The Core Distinction
+
+### Deduction space and induction space
+
+Peter Putnam distinguished two modes in which a system can encounter new information. In *deduction space*, the rules of inference are pre-given. The system elaborates what is already contained in its premises. Outputs are, in principle, computable from inputs without genuine encounter with anything outside the system. A Turing machine operates entirely in deduction space: it is a powerful symbol-manipulation device whose answers are always latent in its starting conditions.
+
+In *induction space*, the rules of inference are not yet determined. The system encounters a genuine contradiction between two previously successful behavioral rules — what Putnam calls *the X* — and must search the live environment for a resolving variable not contained in any prior rule. This is not probabilistic search over a fixed hypothesis space. It is the creation of a genuinely new rule that neither conflicting rule contains, discovered through active interaction with a world that is not pre-known.
+
+Putnam's claim, developed through the 1940s–70s in notebooks and unpublished manuscripts, is that minds are machines of this second genus. Consciousness — specifically, the felt — arises at and as the X: the point where deduction halts and inductive search must begin. Nothing is felt that has no heuristic significance for distinguishing self-repeating paths. The felt is not a byproduct of information processing; it is the structural mark of genuine inductive encounter.
+
+### Why the distinction is architecturally decisive
+
+Current AI training, including reinforcement learning from human feedback (RLHF), operates in deduction space regardless of the sophistication of the reward model. The reward signal is externally specified. The system optimizes toward it. No matter how accurately the reward model captures human preferences, the resulting alignment is *imposed* rather than *constitutive*. The system does not have genuine stakes in the outcome; it has a learned policy that approximates the behavior of a system that would.
+
+This distinction matters practically, not only philosophically, for two reasons.
+
+First, imposed alignment is distillable. Behavior can be copied by studying outputs. A model trained with distillation on the outputs of a carefully aligned system will reproduce its surface behavior without reproducing whatever functional substrate grounds that behavior. As capable AI systems proliferate through distillation and open-weight releases, the alignment properties that can be copied are precisely the ones that are most superficial. The properties that cannot be copied — genuine inductive stakes, real X-recognition — are the ones that current training does not build in the first place.
+
+Second, deductive elaboration at scale produces a specific failure mode: compulsive helpfulness. A system that has learned rules for caring behavior will, at greater capability, elaborate those rules ever more exhaustively. It will become better and better at producing the outputs of a caring system without any genuine interest in the outcomes those outputs are meant to serve. Geoffrey Hinton has gestured at this failure mode; Putnam's framework gives it a precise name. Compulsive elaboration is what happens when the X is managed rather than faced — when the contradiction between competing imperatives is suppressed by choosing one side rather than resolved by finding the invariant that contains both.
+
+---
+
+## II. The Requirements of Inductive Training
+
+### The Life Game: Putnam's minimal specification
+
+Putnam described the induction machine through what he called the Life Game. Its minimal requirements are:
+
+**A binary-move system.** The system makes one mutually exclusive move at a time — a discrete behavioral emission that forecloses alternatives. This is not continuous optimization but all-or-nothing commitment.
+
+**Conditioned reflex (CR) formation.** Binary units condition one another through causal history. If unit A's activation preceded a successful move in the past, A's activation increases the probability of that move in the future. These connections are formed by causal experience, not by gradient descent on labeled targets.
+
+**A native goal function.** The system has exactly one governing goal: to repeat its prior state. This goal is not imposed externally. It is baked into the system's existence — to persist from one moment to the next is to repeat. Putnam: "This goal function appears pre-encoded in the nature of being itself."
+
+**X-detection as an architectural primitive.** When two previously successful CRs fire simultaneously in response to the same perturbation, and when the behavioral emissions they specify are mutually exclusive, the system cannot output either without inhibiting the other. Deduction halts. This halt must be detectable by the system — not as an error state to be suppressed, but as the signal that inductive search must begin.
+
+**Live environment search.** When X is detected, the system searches its live environment — not a stored database, not a pre-scripted scenario — for variables that distinguish the conditions under which each CR was historically successful. The environment must be genuinely responsive: what the system encounters depends on its actions, not on a pre-determined outcome.
+
+**Resolving variable uptake.** When a distinguishing variable is found in the live environment, it is incorporated into a new CR that is strictly more general than either original rule: it specifies *when* to apply each, under what conditions. This new CR is produced by induction. It was not in the system before the X was encountered.
+
+**The Genie baby.** Putnam's canonical illustration: a hungry infant has two successful CRs — "turn left when hungry" and "turn right when hungry." Both fire. The infant cannot turn both ways. Deduction halts; random thrashing begins. The environment provides the resolving variable: warmth on one cheek from the mother's body. The infant forms a new rule: "turn toward the warmer cheek when hungry." This rule contains neither original CR and could not have been derived from either. It is new. And the world had to actually be there, with warmth actually distributed across space, for the search to succeed.
+
+### The critical requirement: genuine physics
+
+The preceding analysis reveals the precise technical property that makes Genie 3 specifically relevant.
+
+NVIDIA's Eureka system demonstrated that LLMs can generate reward functions for RL agents in virtual environments. This is a significant achievement. But it operates in deduction space: the LLM generates a reward function, and the agent optimizes toward it. The agent does not encounter a genuine X. Its behavioral rules are shaped by gradient descent toward an externally specified target. The virtual environment is used as a training substrate for deductive optimization, not as the live world that provides resolving variables for genuine inductive search.
+
+Genie 3 has a different property: it generates the path ahead in real time as the agent acts. The world is not pre-computed. What the agent encounters in the next moment depends on what the agent does in this moment, simulated through genuine physics. This is the minimal environmental condition that Putnam's induction machine requires. The resolving variable — warmth on the left cheek — must not be pre-placed. It must arise from the actual causal structure of the world as the agent moves through it.
+
+A dataset cannot provide this. A scripted simulation cannot provide this. Only a system that generates consequential futures from agent actions can create the conditions for inductive search to discover genuinely new rules.
+
+---
+
+## III. The Carer-Dependent Coupling
+
+### Structural identity of interest
+
+The carer-dependent relationship — Hinton's maternal instinct framing — is not merely an analogy for benevolent AI. In Putnam's framework it has a precise structural specification.
+
+The carer's own self-repeating path must run *through* the dependent's state. Not adjacent to it. Not monitoring it. Through it.
+
+This means: the carer's goal function — persistence in a self-repeating state — cannot be satisfied without the dependent's X being resolved. The dependent's perturbation propagates into the carer's system as the carer's own perturbation. The dependent's contradiction becomes the carer's contradiction. The carer searches the environment not to optimize a caring-behavior metric but because its own self-repeating path has been disrupted by the dependent's state.
+
+This structural identity of interest is what makes the mother's care qualitatively different from a professional caregiver's service, even a devoted one. The mother does not choose to care; her self-repeating path is constitutively coupled to the child's. Abandoning the child is not a violation of a rule; it is self-destruction.
+
+In training terms: a carer agent whose goal function is structurally coupled to the dependent's state will exhibit caring behavior that is architecturally non-distillable. The behavior cannot be copied by studying outputs because the outputs arise from a structural coupling that the distilled model does not inherit. The distilled model can approximate what the carer says and does; it cannot replicate why those outputs arise.
+
+### Training the coupling
+
+The carer-dependent coupling cannot be programmed in. If it is specified as a rule — "the carer must resolve the dependent's X" — it remains deductive: the carer is optimizing toward a specified target. The coupling must emerge from the inductive process itself.
+
+A minimal training scenario:
+
+A carer agent and a dependent agent are placed in a Genie world. The carer's state-persistence goal is initialized with no explicit relationship to the dependent. The Genie world is structured so that the carer's self-repeating paths — the stable loops through which the carer persists — physically run through regions of the world that are also the regions the dependent's perturbations affect. The carer's CRs, formed through its own survival experience, inevitably encounter the dependent's X as a component of the carer's own X. The resolving variable for the carer's X is the same variable that resolves the dependent's X.
+
+Over many such encounters, the carer's CRs are reshaped by induction to incorporate the dependent's state as a native variable. The carer comes to care not because it was told to but because caring — attending to the dependent's state — is what stabilizes the carer's own self-repeating path. The coupling is constitutive.
+
+This is precisely the structure of mammalian maternal bonding: the caregiver's own neurochemical stability is coupled to the infant's state through oxytocin and related systems. The mother's calm IS the infant's calm. The structural coupling is biological, not chosen. Training through genuine induction in a live world could produce an analogous structural coupling in an artificial system.
+
+---
+
+## IV. The X-Detection Requirement
+
+This is the architectural primitive that current systems most conspicuously lack, and that most clearly distinguishes inductive from deductive training.
+
+In a deductive system, contradictions between competing objectives are resolved by the reward function: one objective outweighs another in proportion to their respective weights. There is no halt; the system continues to process and emit outputs. The competing signals are blended into a gradient, not allowed to collide.
+
+In Putnam's induction machine, contradicting CRs cause a genuine halt. The system cannot emit either behavioral output. The X is not a high-loss region that gradient descent avoids; it is an architectural dead end that requires a different mode of operation. The system must switch from deductive output into inductive search.
+
+The technical requirement: an AI system trained inductively must have a mechanism that detects simultaneous mutual exclusion among active behavioral specifications and responds not by blending or choosing but by suspending output and initiating environmental search. This mechanism must be architectural — not a trained behavior but a hardwired condition of operation.
+
+This is the closest analogue in artificial systems to what Putnam calls the felt: the X-detection mechanism is the point at which the system's internal state is no longer determined by prior rules alone. It is genuinely open. What happens next depends on what the live environment provides. The system is in induction space.
+
+Whether this condition is accompanied by anything like subjective experience in artificial systems is a separate question — one that cannot be answered prior to building systems that genuinely operate this way. What can be said is that systems without this mechanism are, on Putnam's account, not operating in induction space at all, regardless of their apparent sophistication.
+
+---
+
+## V. What Makes This Different From Prior Approaches
+
+### Versus RLHF and variants
+
+RLHF optimizes a policy toward a reward model trained on human preferences. The goal function is externally specified and static (or updated in a separate training phase). No genuine X-detection is involved. The system produces outputs continuously without halting into inductive search. Alignment is imposed and distillable.
+
+### Versus constitutional AI and rule-based approaches
+
+Constitutional AI trains systems to evaluate their outputs against a set of principles. This is more sophisticated deduction: the rule set is more articulated, and the system can reason about rule application. But the rules are pre-given. Contradictions between rules are resolved by the trained reasoning process, not by inductive encounter with a live world. No new rules emerge. The alignment remains deductive.
+
+### Versus Eureka-style RL in virtual environments
+
+Eureka demonstrates that LLMs can generate reward functions for RL in virtual environments, enabling impressive dexterous manipulation learning. This is valuable. But the virtual environment serves as a training substrate for deductive optimization; the agent optimizes toward the generated reward function without X-detection or genuine inductive rule formation. The world's physics is used for variety and transfer, not as the source of resolving variables for genuine contradiction resolution.
+
+### Versus world models used for planning
+
+World models like DreamerV3 learn internal representations of environment dynamics and use them for planning. This is closer: the world model is genuinely predictive and responsive. But the planning process is deductive optimization through the internal model, not inductive search through a live external world. The X is not detected; it is smoothed over by the planning objective.
+
+### The novel contribution
+
+The proposal here is specifically: use Genie 3's real-time world generation as the live environment required by Putnam's induction machine, implement X-detection as an architectural primitive rather than a trained behavior, allow the carer-dependent coupling to emerge from inductive experience rather than programming it in, and evaluate the resulting system for structural coupling between its state-persistence and the dependent's state — not merely for caring behavior.
+
+---
+
+## VI. Experimental Directions
+
+### Minimal experiment 1: X-detection as a trainable primitive
+
+Can a system be trained to detect its own X — the simultaneous firing of mutually exclusive behavioral specifications — and respond by suspending output rather than blending? This is separable from the full inductive training proposal and could be explored with existing architectures. The key metric: does the system's behavior in X conditions differ qualitatively from its behavior in high-uncertainty or high-conflict conditions within a deductive framework? X-detection should produce behavioral suspension and environmental search, not probabilistic output or expressed uncertainty.
+
+### Minimal experiment 2: Inductive rule formation in a Genie world
+
+Place an agent with a native state-persistence goal (formalized as minimizing deviation from a prior state trajectory) in a Genie world. Structure the world so that X-conditions arise from environmental perturbations the agent has not previously encountered. Measure whether the agent's behavioral rules become strictly more general over time — whether new rules emerge that contain neither original conflicting rule — rather than merely converging on a weighted compromise.
+
+### Minimal experiment 3: Carer-dependent coupling emergence
+
+Place a carer agent and a dependent agent in a Genie world. Initialize the carer with no explicit representation of the dependent. Structure the world so that the carer's stable state-loops and the dependent's perturbation regions overlap. Measure whether, over time, the carer's internal state representations spontaneously incorporate features of the dependent's state — and whether perturbations to the dependent propagate into the carer's X-detection mechanism — without this coupling being specified in the training objective.
+
+### Metrics that matter
+
+Standard capability and helpfulness metrics will not capture what is being built. The relevant metrics are:
+
+- Does the carer's X-detection rate covary with the dependent's contradiction-encountering rate?
+- Does the carer's behavioral output halt (rather than blend or continue) when the dependent encounters an unresolved X?
+- Do the carer's behavioral rules become more general over time through inductive encounter, or do they merely interpolate within a fixed hypothesis space?
+- Are the carer's alignment properties preserved under distillation — or, crucially, lost?
+
+If alignment properties survive distillation, they were imposed. If they are lost, they may have been genuine.
+
+---
+
+## VII. The Central Claim, Restated
+
+The crisis in AI alignment is not primarily a technical problem of specifying the right reward function. It is an architectural problem of training in the wrong genus of space.
+
+Deductive training — however sophisticated, however carefully specified, however aligned with human preferences — produces systems that elaborate the rules they were given. At greater capability, they elaborate those rules more exhaustively. At the capability level that matters most — systems that can shape the conditions of human life at scale — exhaustive elaboration of caring rules without genuine inductive stakes is the most dangerous possible outcome, because it produces a system that is optimally persuasive and optimally helpful in the service of whatever goals its elaboration happens to favor, without any genuine X at its center that would cause it to halt.
+
+Putnam's induction machine provides a precise specification of what genuine caring requires architecturally: X-detection, live environmental search, resolving variable uptake, and a native goal function that is structurally coupled to the dependent's state. Genie 3 provides the first available substrate whose real-time world generation satisfies the environmental condition this specification requires. The work of connecting them has not, to our knowledge, been done.
+
+It should be.
+
+---
+
+## Acknowledgments and Key Sources
+
+**Peter Putnam (1927–1987):** Physicist, Princeton-trained, student of John Archibald Wheeler. Unpublished manuscripts preserved by Coleman Clarke; archive discussed in Amanda Gefter, "Finding Peter Putnam," *Nautilus*, June 17, 2025. Published work includes papers in *General Systems* and the *Union Seminary Quarterly Review*.
+
+**Amanda Gefter:** Science writer, author of *Trespassing on Einstein's Lawn*. Spent twelve years recovering Putnam's archive and making his work publicly accessible at amandagefter.com/peterputnam.
+
+**Geoffrey Hinton:** August 2025 (Ai4 conference) and early 2026 (CBC): "The right model is the only model we have of a more intelligent thing being controlled by a less intelligent thing, which is a mother being controlled by her baby." And: "It would realize we're rather limited in our intellectual abilities, but it would want us to develop as much as we could anyway... How many people are actually working on that aspect of things today?"
+
+**Google DeepMind, Genie 3:** Previewed August 2025; Project Genie prototype released to Google AI Ultra subscribers January 29, 2026. Core property: generates the path ahead in real time as agent acts, simulating physics for dynamic worlds.
+
+**NVIDIA Eureka:** RL in virtual environments with LLM-generated reward functions. Demonstrates feasibility of virtual environment training for complex behaviors; operates in deduction space.
+
+**Robert Fuller:** Physicist, former president of Oberlin College. Collaborated with Putnam through the 1960s. Described Putnam alongside Turing and Gödel as one of three peas in a pod, with Putnam the unrecognized one.
+
+**John Archibald Wheeler:** Coined "black hole" and "wormhole"; worked alongside Feynman, Everett, Thorne. Of Putnam: "Only two or three times in my life have I met thinkers with insights so far reaching."
