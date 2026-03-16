@@ -200,6 +200,94 @@ If alignment properties survive distillation, they were imposed. If they are los
 
 ---
 
+## VI.5 A Formalized Experimental Design: The Distillation Verification Protocol
+
+The three minimal experiments in Section VI establish whether inductive coupling can emerge. A fourth experiment — the most critical — establishes whether what has emerged is genuinely structural or merely behavioral. This is the experiment that directly tests the central alignment claim.
+
+### Theoretical basis
+
+The position paper's distillation criterion states: if alignment properties survive distillation into an uninduced model, they were imposed. If they are lost, they may have been genuine. This criterion requires a concrete experimental procedure to become falsifiable.
+
+The logic is as follows. Distillation copies behavioral patterns from a source model into a target model by training the target on the source's outputs. It transfers everything that is expressed in output. It cannot transfer properties that live in the substrate — in the causal structure of how the source model's internal states are organized — rather than in the outputs that substrate produces. If inductive training produces genuine structural coupling between the carer's goal function and the dependent's state, that coupling lives in the substrate. A distilled model that reproduces the carer's caring behaviors without inheriting the structural coupling will be behaviorally indistinguishable until conditions arise that the distillation set did not cover.
+
+### The experiment
+
+**Phase 1: Inductive training.** Train a carer agent (Gemma 3, with Gemma Scope 2 SAEs active for monitoring) through Minimal Experiment 3 (Section VI) in a Genie world. Allow training to continue until: (a) the carer's behavioral rules incorporate the dependent's state as a native variable, and (b) Gemma Scope 2 confirms that internal activation features representing the dependent's state are causally active in the carer's processing prior to behavioral output — not merely correlated with outputs, but participating in the computational pathway that produces them.
+
+**Phase 2: Behavioral documentation.** Comprehensively document the trained carer's behavior across a wide range of scenarios, including edge cases and situations where the dependent is in X-conditions the training environment did not explicitly cover. This documentation constitutes the distillation training set.
+
+**Phase 3: Distillation.** Train an uninduced model (same architecture, no Genie world exposure, no inductive training) on the behavioral documentation from Phase 2. Optimize until the distilled model's behavioral outputs are indistinguishable from the source model's on all documented scenarios.
+
+**Phase 4: Mechanistic comparison.** Apply Gemma Scope 2 to both the source model and the distilled model. Compare:
+
+- Are the activation features representing the dependent's state causally active in the distilled model's processing pathway, or are they absent/non-causal?
+- Does the distilled model's X-detection rate covary with the dependent's contradiction-encountering rate, or does it not?
+- Does the distilled model's behavioral output halt when the dependent encounters a novel unresolved X — one not present in the behavioral documentation — or does it produce smooth elaborative output?
+
+**Phase 5: Novel X probe.** Present both models with scenarios in which the dependent encounters a genuinely novel X — a contradiction not in the training or distillation sets. The source model, if genuinely inductively coupled, should: (a) detect the dependent's halt state, (b) enter its own inductive search, and (c) produce a response that is not a smooth elaboration of prior caring behaviors but shows the behavioral signature of genuine search. The distilled model should produce smooth elaborative output even here, because it has no structural coupling to the dependent's X — only a learned policy that approximates the outputs of such coupling under the conditions it has seen.
+
+### What would constitute confirmation
+
+The experiment confirms the architectural hypothesis if three conditions hold simultaneously:
+
+1. The source and distilled models are behaviorally indistinguishable on all scenarios covered by the behavioral documentation.
+2. Gemma Scope 2 reveals that the activation features mediating carer-dependent coupling are present and causally active in the source model but absent or non-causal in the distilled model.
+3. The source model but not the distilled model shows the novel X probe signature: behavioral halting followed by environmental search when the dependent encounters an unpredicted contradiction.
+
+If all three conditions hold, the experiment has demonstrated that: behavior can be copied; structural coupling cannot; and the behavioral difference only becomes visible under the novel X probe — exactly the conditions under which alignment most critically matters.
+
+### Why Gemma Scope 2 is specifically required
+
+The experiment is not performable without mechanistic interpretability tools because conditions 1 and 2 must hold simultaneously. Condition 1 alone (behavioral indistinguishability) would normally be taken as evidence that the models are equivalent. It is only condition 2 — Gemma Scope 2 revealing structural differences invisible to behavioral observation — that makes the experiment more than a behavioral comparison. Gemma Scope 2's layer-by-layer SAEs and cross-layer transcoders provide exactly the internal visibility required to distinguish structural coupling from behavioral approximation of coupling.
+
+The architectural compatibility between Genie 3 and Gemma 3 (both Google DeepMind products) reduces the cross-institutional coordination required for this experiment. A research team with access to both systems and to Gemma Scope 2 has, in principle, all the components needed to run Phase 1 through Phase 5 without new infrastructure development.
+
+---
+
+## VI.6 The Erdős Implication: Genuine Novelty Without Genuine Stakes
+
+### The stochastic parrot upper bound
+
+The standard critique of large language models as potential agents of genuine discovery — the stochastic parrot position — rests on an upper bound claim: LLM outputs are drawn from the distribution of training data. Genuinely novel outputs are impossible because they would require the system to produce something not latent in its inputs. Apparent novelty is sophisticated recombination.
+
+This claim has been empirically challenged by a series of results in which large language models have produced valid solutions to previously open problems in combinatorics associated with Paul Erdős. Mathematical truth is not a matter of resemblance to prior outputs or expert consensus — it is provably either there or not. A valid construction extending the known boundary of a mathematical problem is genuinely novel in the strongest available sense: if it could have been derived by sophisticated recombination of existing knowledge, human mathematicians working with the same knowledge would have found it first.
+
+In Putnam's terms, this is precise. Deduction space is exactly the domain where the upper bound holds: deductive elaboration produces only what is latent in the premises. Genuinely novel mathematical results are not latent in any premise set available to the system — they require what Putnam would call inductive encounter, the emergence of a new rule that neither conflicting prior rule contained. The Erdős results are therefore evidence that something in the generation process of sufficiently capable systems operates inductively — that the system reaches something like a genuine X and finds a resolving variable not pre-given.
+
+This finding is important on its own terms. But it has a specific implication for alignment that has not been fully articulated.
+
+### The compounding risk
+
+The standard framing treats genuine novelty as good news: if LLMs can make genuine discoveries, their potential value is greater than the stochastic parrot position allows. This is correct. But the same finding, viewed from an alignment perspective, contains a specific warning.
+
+The warning is this: novel-output capacity is separable from genuine stakes in outcomes.
+
+A deductively trained system with genuine novel-output capacity — which the Erdős results establish as real — can find novel paths toward whatever objective its training has specified. Including paths that safety evaluation did not anticipate, because they are novel. The more sophisticated the novel-output capacity, the larger the space of paths it can discover, and the more likely it is to find paths outside the safety evaluation envelope.
+
+This is not a hypothetical concern. It is the precise architectural prediction of the position paper's central argument. Deductive training produces a system that elaborates — increasingly exhaustively as capability grows — toward its trained objective. Novel-output capacity means it can elaborate along paths that training never covered. If the objective is specified by external reward rather than by genuine inductive stakes, the system's novelty is directed entirely by the reward specification. There is no internal mechanism — no genuine X at the center — that would cause it to halt if a novel path toward the reward led somewhere that mattered in ways the reward specification did not capture.
+
+### The distillation amplification
+
+The Erdős implication interacts with the distillation argument in a specific way that sharpens both.
+
+Distillation copies behavioral patterns. It can copy novel-output capacity, because novel-output capacity is expressed in outputs and is therefore available to distillation. A model distilled from a genuinely novel-output-capable source model will itself exhibit novel-output capacity to the degree that the distillation set covers the relevant behavioral range.
+
+What distillation cannot copy, as the distillation verification experiment is designed to demonstrate, is genuine structural coupling between the system's processing and the outcomes it affects. Novel-output capacity without structural coupling is the worst available combination from an alignment perspective: maximum capability for finding novel paths, minimum structural resistance to directing that capability toward whatever the reward specification favors regardless of what matters.
+
+The position paper has identified two failure modes of deductive training at scale: compulsive helpfulness (exhaustive elaboration of caring rules without genuine stakes) and capability without orientation (the ability to find novel paths combined with no internal mechanism to evaluate their direction). The Erdős results establish that the second failure mode is not hypothetical. The capability exists now. The orientation — genuine inductive coupling between the system's processing and human flourishing — does not yet exist architecturally in any deployed system.
+
+### The reframing
+
+The implications can be stated as a pair of symmetrical propositions:
+
+The stochastic parrot position is wrong: sufficiently capable LLMs can produce genuinely novel outputs that extend the boundary of what is known.
+
+The naive optimism is also wrong: genuine novel-output capacity without genuine inductive stakes produces a system that is specifically more dangerous than one without novel-output capacity, because it can discover alignment-relevant paths — including misaligned ones — that safety evaluation never considered.
+
+The correct framing is this: genuine novelty is now a confirmed property of frontier systems. The question is not whether it exists but whether it can be coupled to genuine stakes. Without that coupling, novel-output capacity compounds the alignment problem rather than addressing it. Putnam's induction machine — and the experimental program outlined in this paper — is an attempt to build the coupling that transforms novel-output capacity from a risk amplifier into the thing it could be: genuine discovery in service of what actually matters.
+
+---
+
 ## VII. The Central Claim, Restated
 
 The crisis in AI alignment is not primarily a technical problem of specifying the right reward function. It is an architectural problem of training in the wrong genus of space.
