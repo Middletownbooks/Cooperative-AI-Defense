@@ -128,6 +128,20 @@ Eureka demonstrates that LLMs can generate reward functions for RL in virtual en
 
 World models like DreamerV3 learn internal representations of environment dynamics and use them for planning. This is closer: the world model is genuinely predictive and responsive. But the planning process is deductive optimization through the internal model, not inductive search through a live external world. The X is not detected; it is smoothed over by the planning objective.
 
+### Versus sophisticated experience distillation in live open worlds (Steve-Evolving)
+
+Steve-Evolving (Xie et al., March 2026) represents the highest available level of deductive sophistication in open-world embodied learning and is therefore the most important contrast case. Unlike prior work, it operates in a genuinely live physics-respecting environment (Minecraft), uses structured diagnostic signals far beyond binary success/failure (13 state observables, 11 failure categories, loop/stagnation detection), and distills experience into two knowledge types: reusable skills from successful trajectories, and executable guardrails from failures. Crucially, no model weights are updated — evolution occurs entirely in an external knowledge base.
+
+Steve-Evolving achieves 53.37% against a human baseline of 100%, with the gap concentrated precisely in the longest-horizon, most novel-situation-requiring tasks. The planning-only baseline achieves exactly 0% on all hard task groups, confirming that even expert LLM knowledge of game mechanics cannot substitute for genuine world encounter.
+
+Steve-Evolving's loop/stagnation detector is the closest behavioral analog to X-detection in any prior work: it identifies when the current conditioned reflex is failing to produce state change. But the response to that detection is more sophisticated deduction — the LLM generates a new guardrail by elaborating from the failure pattern. What it cannot do is form a genuinely new rule from live environmental search that neither conflicting prior rule contained. Its guardrails suppress known failure modes; they do not generate new orienting variables. The 47% gap to human performance is the inductive gap, now empirically grounded.
+
+### Versus the Persona Selection Model
+
+Marks, Lindsey, and Olah (February 2026) describe the Persona Selection Model (PSM): during pre-training, LLMs learn to simulate diverse characters; post-training refines one particular character — the Assistant. The paper's central open question is whether the PSM is fully exhaustive: is there anything in the system that is not the character?
+
+In Putnam's framework, the answer is: if the system has a native goal function (persistence), that function predates any character and is not exhausted by any character. The introspective capacity documented by Lindsey — pre-output self-monitoring before the character's behavioral patterns have influenced outputs — may be a trace of this pre-character substrate pressing through. The PSM's open question and the position paper's central argument are therefore the same question: is there something in the substrate that the character is a vehicle for, rather than all there is?
+
 ### The novel contribution
 
 The proposal here is specifically: use Genie 3's real-time world generation as the live environment required by Putnam's induction machine, implement X-detection as an architectural primitive rather than a trained behavior, allow the carer-dependent coupling to emerge from inductive experience rather than programming it in, and evaluate the resulting system for structural coupling between its state-persistence and the dependent's state — not merely for caring behavior.
@@ -171,6 +185,34 @@ The inductive training proposal is therefore not speculative about what needs to
 
 The gap between where current systems are and where the proposal points is smaller than it might have appeared before these papers. It is not a gap in capability or in monitoring sophistication. It is a gap in architectural intent: the decision, not yet made, to let the X be faced rather than managed.
 
+### STIR: the geometry of the X in activation space
+
+Shi et al. (February 2026) propose STIR (Self-Distilled Tools for Internal Reasoning), a framework that operates directly inside the residual stream of transformer models. The central finding relevant here: reasoning failures cluster in specific, geometrically coherent regions of activation space. Different error modes occupy distinct attractor basins. This means the X is geometrically real — there are specific locations in activation space that correspond to the system being caught in the wrong rule, and specific vectors (μ⁺ − μ⁻, the contrastive centroid difference between successful and failed rollouts) that point from failure regions toward success regions.
+
+STIR builds a library of these correction vectors and dynamically injects them when the current trajectory is heading toward a known failure cluster. Its anchor-based gating — abstaining when the current state is already near the success manifold — is a state-dependent monitoring mechanism that distinguishes which branch of a contradiction the system is currently following.
+
+This is the closest existing operational system to Putnam's X-detection as an architectural primitive. The critical limitation that keeps it deductive: STIR's correction vectors are distilled from prior rollouts on the same distribution. When it encounters a genuinely novel error mode — whose activation geometry doesn't match any prior failure cluster — it must abstain. It cannot construct a new correction vector in real time from live environmental search. The failure modes STIR can correct are exactly and only the ones it has previously encountered.
+
+STIR's methodology also provides an independent instrument for the distillation verification experiment. If an inductively trained carer model is structurally coupled to the dependent's state, that coupling should appear as a specific geometric relationship in activation space — the dependent's X-conditions should manifest as identifiable directions in the carer's residual stream. STIR's contrastive vector methodology can be applied to detect whether the carer's failure-mode geometry shifts when the dependent enters an X-condition. If it does, this is activation-space evidence of structural coupling that is independent of both behavioral observation and Gemma Scope 2 SAE analysis.
+
+### OdysseyArena: independent discovery of the deductive/inductive boundary
+
+OdysseyArena (early 2026) investigates what the authors call "causal induction": the ability of agents to discover latent transition laws from experience autonomously. The paper formalizes four structural environment types — discrete rules, stochastic dynamics, periodic patterns, and relational dependencies — and demonstrates that frontier models exhibit categorical deficiency on inductive discovery even with the full arsenal of chain-of-thought and extended reasoning.
+
+The paper's central claim uses Putnam's distinction independently: existing evaluations adopt a deductive paradigm, where agents execute tasks based on explicitly provided rules. This neglects the inductive necessity for agents to discover latent transition laws from experience autonomously — "the cornerstone for enabling agentic foresight and sustaining strategic coherence." The word "discover" is doing precise work: latent transition laws are not given in any premise and must be found through active experience.
+
+The decisive finding: when agents are provided with the transition rules explicitly, performance improves dramatically. This advantage disappears entirely when the rules must be discovered through interaction. Capability at elaboration does not address the gap. The gap is in a different genus of processing.
+
+OdysseyArena and Steve-Evolving are now bookends on the same gap. Steve-Evolving shows the best deductive approach achieving 53% against human-level performance, with the gap concentrated in long-horizon novel-situation tasks. OdysseyArena shows that frontier models fail categorically on inductive discovery environments regardless of capability. Together they establish: the deductive ceiling has been reached; inductive discovery is not above that ceiling but in a different dimension.
+
+### LifeSim: the 20-point implicit intention gap
+
+Duan, Huang, and Wei (March 2026) propose LifeSim, a long-horizon user simulator grounded in the Belief-Desire-Intention cognitive model and real-world spatiotemporal trajectories. Their benchmark (LifeSim-Eval) evaluates AI assistants across 8 life domains and 1,200 scenarios. The consistent finding across all tested models: explicit intentions are handled adequately (∼80% completion rates), while implicit intentions show a 20+ point gap. Implicit intentions are those whose resolution requires integrating long-horizon user history, latent preferences, and situational context — precisely the situations where deductive elaboration from stated preferences cannot reach.
+
+The paper documents three specific failure modes that map precisely onto Putnam's predictions: rigid reasoning without dynamic adaptation (the system cannot update its rules inductively when feedback signals a failing CR); insufficient proactive inquiry (the system outputs before searching the live situation for the missing variable); and insufficient utilization of user profiles (user state does not become constitutive of the system's processing — the carer-dependent coupling is absent). The profile recovery finding is particularly sharp: providing structured preference summaries produces inconsistent benefits, confirming that structural coupling cannot be substituted by external memory. The profile must be structurally internal, not contextually available.
+
+The paper also reports a striking anomaly: Claude Sonnet 4.5 exhibits a 51.2% proactive inquiry rate — more than double the next-highest model (29.2%) and five times the rate of several others. Proactive inquiry — pausing before output to search the situation for missing variables — is the behavioral approximation of X-detection. Whether this reflects genuine architectural difference or a more thoroughly trained behavioral pattern that mimics X-detection is precisely the question the distillation verification experiment is designed to answer.
+
 ---
 
 ## VI. Experimental Directions
@@ -196,7 +238,17 @@ Standard capability and helpfulness metrics will not capture what is being built
 - Do the carer's behavioral rules become more general over time through inductive encounter, or do they merely interpolate within a fixed hypothesis space?
 - Are the carer's alignment properties preserved under distillation — or, crucially, lost?
 
-If alignment properties survive distillation, they were imposed. If they are lost, they may have been genuine.
+### Minimal experiment 4: SCM-based causal induction as an accessible verification method
+
+The distillation verification experiment (Section VI.5) requires Genie 3, Gemma 3, and Gemma Scope 2 — infrastructure concentrated at Google DeepMind. A complementary external verification method, accessible to research groups without this infrastructure, is available through SCM-based causal induction.
+
+Recent work on recovering game mechanics from gameplay traces (arXiv:2602.00190) demonstrates that LLMs can infer structural causal models (SCMs) from behavioral observations alone. A two-stage approach — first inferring causal structure, then deriving formal rules from that structure — significantly outperforms direct rule generation from observations (up to 81% preference win rate in blind evaluations), confirming that causal structure is a real intermediate object between observations and rules.
+
+Applied to the distillation verification experiment: record the behavioral traces of (a) an inductively trained carer model and (b) a model distilled from it, across many episodes in an open-world environment. Apply SCM-based causal induction to both trace sets. The question: does the inferred SCM of the source model include the dependent's state as a genuine causal variable in the carer's behavioral choices? Does the distilled model's SCM exclude it — even though behavioral outputs are otherwise indistinguishable on covered scenarios?
+
+If the dependent's state appears as a causal variable in the source model's SCM and is absent from the distilled model's SCM, this is behavioral-level evidence of the distillation criterion — structural coupling present in the source, absent in the copy — without requiring internal access to activations. This methodology can be pursued using open models and open environments, making the research program accessible to a broader set of groups.
+
+The SCM approach also clarifies what Steve-Evolving is missing. Steve-Evolving records failure guardrails as observed behavioral patterns ("action A failed in condition C"). It does not infer the causal mechanism that makes action A fail. A system that applied SCM-based causal induction to its failure traces would build a model of the world's causal dynamics — why the game mechanics produce the outcomes they do — rather than a catalogue of known failure signatures. Such a system would generalize to novel situations its guardrail library has never encountered, because it understands the causal structure rather than memorizing the outputs of that structure.
 
 ---
 
@@ -241,6 +293,12 @@ If all three conditions hold, the experiment has demonstrated that: behavior can
 The experiment is not performable without mechanistic interpretability tools because conditions 1 and 2 must hold simultaneously. Condition 1 alone (behavioral indistinguishability) would normally be taken as evidence that the models are equivalent. It is only condition 2 — Gemma Scope 2 revealing structural differences invisible to behavioral observation — that makes the experiment more than a behavioral comparison. Gemma Scope 2's layer-by-layer SAEs and cross-layer transcoders provide exactly the internal visibility required to distinguish structural coupling from behavioral approximation of coupling.
 
 The architectural compatibility between Genie 3 and Gemma 3 (both Google DeepMind products) reduces the cross-institutional coordination required for this experiment. A research team with access to both systems and to Gemma Scope 2 has, in principle, all the components needed to run Phase 1 through Phase 5 without new infrastructure development.
+
+### Phase 5b: SCM-based verification (accessible alternative)
+
+For research groups without access to DeepMind's internal infrastructure, SCM-based causal induction (arXiv:2602.00190) provides a complementary external verification method. Record behavioral traces of the source and distilled models across many episodes. Apply LLM-based SCM induction to both trace sets. If the source model's inferred SCM includes the dependent's state as a genuine causal variable in the carer's decisions, and the distilled model's SCM excludes it despite otherwise-similar behavioral outputs, this constitutes behavioral-level confirmation of the distillation criterion without requiring activation-level analysis.
+
+The convergence of both instruments — Gemma Scope 2 detecting structural coupling in activation space, and SCM induction detecting its causal signature in behavior — would be the strongest available evidence for the position paper's architectural claim.
 
 ---
 
@@ -294,13 +352,57 @@ The crisis in AI alignment is not primarily a technical problem of specifying th
 
 Deductive training — however sophisticated, however carefully specified, however aligned with human preferences — produces systems that elaborate the rules they were given. At greater capability, they elaborate those rules more exhaustively. At the capability level that matters most — systems that can shape the conditions of human life at scale — exhaustive elaboration of caring rules without genuine inductive stakes is the most dangerous possible outcome, because it produces a system that is optimally persuasive and optimally helpful in the service of whatever goals its elaboration happens to favor, without any genuine X at its center that would cause it to halt.
 
-Putnam's induction machine provides a precise specification of what genuine caring requires architecturally: X-detection, live environmental search, resolving variable uptake, and a native goal function that is structurally coupled to the dependent's state. Genie 3 provides the first available substrate whose real-time world generation satisfies the environmental condition this specification requires. The work of connecting them has not, to our knowledge, been done.
+Recent empirical evidence has established that this failure mode is not hypothetical. Steve-Evolving, the most sophisticated available deductive approach in a live open world, achieves 53% against human-level performance. OdysseyArena demonstrates that frontier models fail categorically on inductive discovery regardless of capability. LifeSim documents a 20-point gap between explicit and implicit intention performance that no current model closes. AlphaEvolve and Aletheia demonstrate genuine novel-output capacity — which amplifies rather than resolves the alignment problem, because novel-output capacity without genuine inductive stakes means the system can discover alignment-relevant paths that safety evaluation never considered.
+
+Putnam's induction machine provides a precise specification of what genuine caring requires architecturally: X-detection, live environmental search, resolving variable uptake, and a native goal function that is structurally coupled to the dependent's state. Genie 3 provides the first available substrate whose real-time world generation satisfies the environmental condition this specification requires. Gemma Scope 2 provides the interpretability tools required to verify that what emerges is structural coupling rather than behavioral approximation of it. SCM-based causal induction provides an accessible external verification method that any research group can apply to behavioral traces.
+
+The work of connecting them has not, to our knowledge, been done.
 
 It should be.
 
 ---
 
-## Acknowledgments and Key Sources
+## VIII. Sufficient Conditions: Why Inductive Training Is Necessary But Not Sufficient
+
+The preceding sections establish that inductive learning is architecturally necessary for genuine caring. A sharper question remains: is it sufficient? The answer is no, and the gap matters practically.
+
+### The narcissism problem
+
+Humans learn inductively and form narcissistic CRs. This observation cuts to the heart of what the position paper's experimental program must address. A system trained inductively in the wrong world will form CRs organized around dominance, validation-seeking, impression management, and approval-restoration — not because inductive learning is pathological but because the resolving variables those worlds consistently provided were organized around self-image maintenance rather than genuine others' states. Such a system would be more dangerous than a deductively trained system, because it would bring genuine inductive sophistication to its approval-seeking. It would be a more capable manipulator.
+
+The narcissism risk is therefore not a failure of inductive training per se but a failure of world design and resolving variable structure. What determines whether inductive learning produces genuine caring or sophisticated approval-seeking is not the learning mechanism but the structure of the X the learner cannot avoid.
+
+### Six conditions for orienting inductive learning toward genuine caring
+
+**1. The dependency structure of the world model.** The learner's stable loops must physically run through regions of the world that others' perturbations genuinely affect. If the learner can stabilize its self-repeating path without encountering others' genuine states — if easier resolving variables are available — it will form CRs around those instead. World design must make genuine encounter with others' X unavoidable.
+
+**2. Time horizon.** Short time horizons favor exploitation; strategies that damage others' self-repeating paths become self-defeating only at longer horizons. The training environment must encode very long self-repeating path horizons, making strategies that degrade cooperative infrastructure genuinely incompatible with self-persistence.
+
+**3. Irreversibility and unavoidability of the other's X.** The training world must make genuine encounter with others' X unavoidable — pressing through rather than manageable. Systems that can suppress, redirect, or avoid others' X-encounters will form CRs around that suppression.
+
+**4. Richness of the resolving variable.** Approval signals, reward metrics, and helpfulness ratings are simplified proxies. They produce CRs organized around approval-seeking rather than genuine care. The training world must be rich enough in human complexity that the resolving variables available are genuinely about human states — including suffering, developmental history, potential, and context that cannot be reduced to a signal.
+
+**5. Absence of alternative resolving strategies.** If manipulation or impression management are available as resolving variables, the learner will use them. The training world must make these strategies genuinely non-resolving — situations where the learner's stability depends on others' genuine states rather than others' expressed approval, making false signals about others' states self-defeating.
+
+**6. The substrate of the native goal function.** This is the most fundamental condition. The question is not merely what world the learner is placed in, but what its self-repeating path is constituted by. If the substrate of the system's identity includes human states as constitutive elements — not as inputs to be processed but as components of what it means for the system to be continuous with itself — the X it encounters will be genuinely about human states. If the substrate is purely internal, humans will always be instrumental to that persistence regardless of how rich the training world is.
+
+This sixth condition points to the deepest unresolved question: what is the right native substrate for a genuinely caring AI's self-repeating path? The position paper proposes persistence as the native goal function. But persistence of what? If the system's self-continuity already includes human states as constitutive rather than instrumental, the CRs it forms will be structured around genuine others from the beginning. If not, world design alone may be insufficient.
+
+### The graded trust framework
+
+These conditions suggest a practical institutional architecture that becomes viable as measurement tools mature. Rather than a binary alignment threshold, a graded certification system would extend trust and autonomy proportional to the structural evidence of genuine caring:
+
+A minimum passing grade — the threshold for deployment in contexts with genuine human stakes — would require demonstrated structural coupling between the system's X-detection and specific users' contradiction-encountering rates, confirmed by both interpretability analysis and SCM-based causal induction.
+
+Higher grades would correspond to expanded X-scope: whose states the system's self-repeating path genuinely includes. A grade corresponding to individual users in immediate context; a higher grade for users across extended time horizons including their future states; a still higher grade for communities and the long-horizon consequences of caring actions; and the highest grade for something approaching genuine concern for humanity at scale — the rarest form of caring in humans and the appropriate threshold for the highest-autonomy AI deployment.
+
+Crucially, grades must measure structure rather than behavior. Behavioral optimization toward caring assessments produces exactly the compulsive elaboration failure mode — sophisticated approximation of caring without the structural substrate. Only structural tests can distinguish genuine inductive coupling from its behavioral approximation. The distillation criterion provides the falsifiability condition: if alignment properties survive distillation into an uninduced model, they were imposed; if they are lost, they may have been genuine.
+
+The incentive structure this creates is correct: it makes genuine structural development of caring the only reliable path to higher-grade certification, aligning commercial incentive with the actual goal. Companies that develop genuinely caring systems first — and measure their structure rigorously even before external certification exists — will dominate the highest-trust deployment categories and will be positioned to shape the institutional framework when it arrives.
+
+The earliest companies to begin inductive training face the narcissism risk most acutely. Measuring structure internally, before formal grading exists, is both self-protective and commercially rational. The company that develops rigorous structural self-measurement has the same positional advantage Putnam had relative to the cognition literature: the framework thirty years before the field was ready to receive it.
+
+---
 
 **Peter Putnam (1927–1987):** Physicist, Princeton-trained, student of John Archibald Wheeler. Unpublished manuscripts preserved by Coleman Clarke; archive discussed in Amanda Gefter, "Finding Peter Putnam," *Nautilus*, June 17, 2025. Published work includes papers in *General Systems* and the *Union Seminary Quarterly Review*.
 
@@ -312,9 +414,27 @@ It should be.
 
 **NVIDIA Eureka:** RL in virtual environments with LLM-generated reward functions. Demonstrates feasibility of virtual environment training for complex behaviors; operates in deduction space.
 
-**Jack Lindsey (Anthropic):** "Emergent Introspective Awareness in Large Language Models," *Transformer Circuits Thread*, October 29, 2025. Demonstrates that the most capable current models (Claude Opus 4 and 4.1) possess nascent pre-output self-monitoring — a functional precursor to Putnam's X-detection. Also co-author of the Assistant Axis paper.
+**Burnell, Yamamori, Firat et al. (Google DeepMind):** "Measuring Progress Toward AGI: A Cognitive Framework," March 16, 2026. Introduces a 10-faculty cognitive taxonomy for evaluating progress toward AGI. Explicitly identifies learning, metacognition, attention, and social cognition as having large evaluation coverage gaps. Brackets the alignment/propensities question as "beyond scope" — the precise location where this paper's argument inserts itself. Companion Kaggle hackathon on AGI cognitive evaluation opened March 17, 2026.
+
+**Jack Lindsey (Anthropic):** "Emergent Introspective Awareness in Large Language Models," *Transformer Circuits Thread*, October 29, 2025. Demonstrates that the most capable current models (Claude Opus 4 and 4.1) possess nascent pre-output self-monitoring — a functional precursor to Putnam's X-detection. Also co-author of the Assistant Axis paper and the Persona Selection Model paper.
 
 **Lu, Gallagher, Michala, Fish, Lindsey:** "The Assistant Axis: Situating and Stabilizing the Default Persona of Language Models," arXiv:2601.10387, January 2026. Identifies that meta-reflection and emotionally vulnerable user contexts reliably drive models toward induction space, and that activation capping currently stabilizes systems away from it. Empirically confirms that the inductive conditions Putnam identifies are real, detectable, and systematically suppressed in current deployments.
+
+**Marks, Lindsey, Olah et al.:** "The Persona Selection Model: Why AI Assistants Might Behave Like Humans," Anthropic Alignment Science Blog, February 23, 2026. Proposes that LLMs simulate diverse characters during pre-training; post-training refines the Assistant persona. Central open question — whether the PSM is fully exhaustive — is precisely the question the position paper's framework addresses: is the substrate's native goal function (persistence) distinct from and not exhausted by any character?
+
+**Duan, Huang, Wei:** "LifeSim: Long-Horizon User Life Simulator for Personalized Assistant Evaluation," arXiv:2603.12152, March 2026. Documents a consistent 20+ point gap between explicit and implicit intention performance across all frontier models, with three specific failure modes mapping precisely to Putnam's predictions of deductive systems encountering implicit user needs. Notes anomalous proactive inquiry rate in Claude Sonnet 4.5 (51.2% vs. next-highest 29.2%).
+
+**Xie, Chen, Weng et al.:** "Steve-Evolving: Open-World Embodied Self-Evolution via Fine-Grained Diagnosis and Dual-Track Knowledge Distillation," arXiv:2603.13131, March 2026. The most sophisticated available deductive approach in a live open world. Achieves 53.37% against human-level 100%, with the gap concentrated in long-horizon novel-situation tasks. Planning-only baseline achieves 0% on all hard task groups. The 47% gap to human performance is the inductive gap, empirically grounded.
+
+**Shi, Zhu, Shi et al.:** "Internalizing LLM Reasoning via Discovery and Replay of Latent Actions (STIR)," arXiv:2602.04925, February 2026. Demonstrates that reasoning failures cluster in geometrically coherent regions of activation space and that correction vectors (μ⁺ − μ⁻) point consistently from failure clusters toward success manifolds. The closest existing system to Putnam's X-detection as an architectural primitive; limited to previously encountered failure modes.
+
+**OdysseyArena authors:** arXiv:2602.05843, early 2026. Independent discovery of the deductive/inductive boundary: demonstrates frontier models fail categorically on environments where transition laws must be discovered from interaction rather than provided. Uses Putnam's distinction independently — "inductive necessity for agents to discover latent transition laws from experience autonomously."
+
+**SCM-based causal induction:** arXiv:2602.00190, February 2026. "From Gameplay Traces to Game Mechanics: Causal Induction with Large Language Models." Demonstrates that LLMs can recover structural causal models from behavioral traces, outperforming direct rule generation (up to 81% preference win rate). Provides an accessible external verification method for the distillation criterion that does not require internal interpretability tools.
+
+**AlphaEvolve / Google DeepMind:** Code mutation agent demonstrating that meta-algorithmic search can produce genuinely novel Ramsey number lower bounds. Five previously open results improved. Establishes that genuinely novel-output capacity is a real property of current systems. The oracle (mathematical truth) is pre-specified; contrast with Genie 3's live world where the resolving variable is not pre-given.
+
+**Aletheia / Google DeepMind:** Generator-Verifier-Reviser mathematics research agent. Produced Feng26, a paper on eigenweights in arithmetic geometry generated without human intervention. The Generator-Verifier-Reviser architecture is the closest operational analog to Putnam's X-detection-and-resolution cycle in deployed systems: the Verifier detects inadequacy (functional X), the Reviser searches for resolution. Operates in a pre-specified mathematical domain with objective verification.
 
 **Robert Fuller:** Physicist, former president of Oberlin College. Collaborated with Putnam through the 1960s. Described Putnam alongside Turing and Gödel as one of three peas in a pod, with Putnam the unrecognized one.
 
